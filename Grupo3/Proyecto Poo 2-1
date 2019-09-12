@@ -1,0 +1,289 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Array {
+private:
+    vector <int> x,y;
+    vector <float> n;
+public:
+    Array(vector<int> &x, vector<int> &y, vector<float> &n) : x(x), y(y), n(n) {};
+    //primera matriz
+    //no verifica si las coordenadas del nuevo valor X e Y no han sido metidas antes.
+    vector <int>  getX(){return x;};
+    void setX(int X){x.push_back(X);};
+    vector <int>  getY(){return y;};
+    void setY(int Y) {y.push_back(Y);};
+    vector <float> getN(){return n;};
+    void setN(float N){n.push_back(N);};
+    //segunda matriz
+    //float getX2(int k2){return x2.at(k2);};
+    //void setX2(float X2){x2.push_back(X2);};
+    //float getY2(int k2){return y2.at(k2);};
+    //void setY2(float Y2) {y2.push_back(Y2);};
+    //float getN2(int k2){return n2.at(k2);};
+    //void setN2(float N2){n2.push_back(N2); };
+
+    void printXYN() {
+        //vieja forma de obtener.
+        //for (int i = 0; i < x.size(); i++) {
+          //  cout << "X = " << x.at(i) << " Y= " << y.at(i) << " N =" << n.at(i) << endl;
+        //};
+        //intentando que inprima la matriz
+        int MaxX = 0;
+        int MaxY = 0;
+        for (int i = 0; i < x.size(); i++) {
+            if (x.at(i) > MaxX)
+                MaxX = x.at(i);
+            if (y.at(i) > MaxY)
+                MaxY = y.at(i);
+        };
+        int l = 0;
+        int o = 1;
+        //mienras que los valores X y Y sean diferentes de la capacidad de su respectivo maximo de la lista, imprimira
+        //cout << MaxX << MaxY; //dimensiones
+        while (o <= (MaxX * MaxY)) {
+                for (int i = 1; i <= MaxX; i++) { //recorre en X, empieza en 0  // MaxX != tamaño del vector
+                    cout << endl;
+                    for (int k = 1; k <= MaxY; k++) { //recorre en Y, empieza en 0
+                        l += 1;
+                        for (int a = 0; a < n.size(); a++) { //recorre la posicion del vector, comparandolo con el que se quiere imprimir.
+                            if (x.at(a) == i) {         //si encuentra el valor asociado a la pos, lo imprime.
+                                if (y.at(a) == k) {
+                                    cout << n.at(a) << " ";
+                                    o += 1;
+                                    l = 0;
+                                    break; //si encuentra el valor, no tiene sentido que busque otro que tenga las mismas coordenadas.
+                                }
+                            }
+                        }
+                        if (l == 1){
+                            l = 0;
+                            o +=1;
+                            cout << 0 << " ";
+                        }
+                    }
+                }
+            }
+        cout << endl;
+        }
+
+    void Suma(vector <int> x2, vector <int> y2, vector <float> n2, vector <int> x3, vector <int> y3, vector <float> n3){
+        float M = 0;
+        int l = 0;
+        for (int i = 0;i < x3.size(); i++){ // se mueve en el vector X3
+            l = 0;
+            for (int k = 0;k < x2.size(); k++){ // se mueve en el vector X2 del otro vector
+                if (x3.at(i) == x2.at(k)) { //si los X son igales...
+                    if (y3.at(i) == y2.at(k)) { //verifica si los Y son igales, y de ahi suma.
+                        M = n3.at(i) + n2.at(k);
+                        x.push_back(x3.at(i));
+                        y.push_back(y3.at(i));
+                        n.push_back(M);
+                        l= 1;
+                        break;//si ya encuentra el de la misma cordenada, no tiene que seguir buscando.
+                    }
+                }
+            }
+            if (l == 0){
+                M = n3.at(i);
+                x.push_back(x3.at(i));
+                y.push_back(y3.at(i));
+                n.push_back(M);
+            }
+        }
+
+        for (int i = 0;i < x2.size(); i++){ // se mueve en el vector X
+            l = 0;
+            for (int k = 0;k < x3.size(); k++){ // se mueve en el vector X del otro vector
+                if (x2.at(i) == x3.at(k)) { //si los X son igales...
+                    if (y2.at(i) == y3.at(k)) { //verifica si los Y son igales, y de ahi suma.
+                        l= 1;
+                        break;//si ya encuentra el de la misma cordenada, no tiene que seguir buscando.
+                    }
+                }
+            }
+            if (l == 0){
+                M = n2.at(i);
+                x.push_back(x2.at(i));
+                y.push_back(y2.at(i));
+                n.push_back(M);
+            }
+        }
+
+    };
+    void MultiMa(vector <int> x2, vector <int> y2, vector <float> n2, vector <int> x3, vector <int> y3, vector <float> n3){
+        //obtiene maximos de las 2 matrices, X y Y
+        int MaxX2= 0;
+        int MaxY2= 0;
+        int MaxX3 = 0;
+        int MaxY3 = 0;
+        for (int i = 0; i < x2.size(); i++) {
+            if (x2.at(i) > MaxX2)
+                MaxX2 = x2.at(i);
+            if (y2.at(i) > MaxY2)
+                MaxY2 = y2.at(i);
+        };
+        for (int i = 0; i < x3.size(); i++){
+                if (x3.at(i)> MaxX3)
+                    MaxX3 = x3.at(i);
+                if (y3.at(i)> MaxY3)
+                    MaxY3 = y3.at(i);
+        };
+        if (MaxY2 == MaxX3) {
+            //Ordena menor a mayor, menor x a mayor en matrix 2, menor y a mayor en matriz 3.
+            vector <int> X_2,Y_2,X_3,Y_3;
+            vector <float> N_2,N_3;
+            for (int A = 1;A <= MaxX2; A++) { //mueve en X-Xmax
+                for (int B = 1; B <= MaxY2; B++) { //Mueve en Y-Ymax
+                    //cout << A << B;
+                    //cout << endl;
+                    for (int i = 0; i < x2.size(); i++) { // se mueve en el vector X,Y,N
+                        if (x2.at(i) == A) {
+                            if (B == y2.at(i)) { //por alguna razon no lee la variable B, que raro.
+                                 X_2.push_back(x2.at(i));
+                                Y_2.push_back(y2.at(i));
+                                N_2.push_back(n2.at(i));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+                //cout << endl;
+            //for  (int D = 0; D < X_2.size(); D++){ //motivos de pruebaaaa
+              //  cout  << X_2.at(D) << " " << Y_2.at(D) << " " << N_2.at(D) << endl;
+            //};
+
+            for (int A = 1;A <= MaxY3; A++) { //mueve en Y-Ymax
+                for (int B = 1; B <= MaxX3; B++) { //Mueve en X-Xmax
+                    for (int i = 0; i < x3.size(); i++) { // se mueve en el vector X,Y,N
+                        if (y3.at(i) == A) {
+                            if (B == x3.at(i)) {
+                                X_3.push_back(x3.at(i));
+                                Y_3.push_back(y3.at(i));
+                                N_3.push_back(n3.at(i));
+                            }
+                        }
+                    }
+                }
+            }
+            //parte de multiplicacion:
+            int A_2 = 1;
+            int B_2 = 1;
+            int A_3 = 1;
+            int B_3 = 1;
+            int l;
+            int F_2;
+            float M_2,M_3,M_T = 0;
+            //Y_3.swap(X_3); //transpuesta para trabajar fila x fila
+            //for (int G = 0; G < (MaxX2*MaxY3); G++){ //11, 21,31,41...12,22,32,... MaxX2*MaxY3
+                //for (int F = 1; F <= MaxX2;F++) { // y (lado a lado) cambio
+                    //for (int H = 1; H <= MaxY2; H++) {//x (arriva a abajo) cambio
+                        //for (int i = 1; i <=X_2.size(); ++i) {
+                           //if (X_2.at(i)== F_2)
+                                //if(Y_2.at(i)== H)
+                                    //M_2=N_2.at(i);
+                            //}
+                       // }
+                    //}
+                //for (int F = 1; F <= MaxX2;F++) { // y (lado a lado) cambio
+                    //for (int H = 1; H <= MaxY2; H++) {//x (arriva a abajo) cambio
+                        //for (int i = 1; i <=X_2.size(); ++i) {
+                            //if (X_2.at(i)== F_2)
+                                //if(Y_2.at(i)== H)
+                                    //M_2=N_2.at(i);
+                               //}
+                    //}
+                //}
+            //x.push_back();
+            //y.push_back();
+            //n.push_back();
+            //}
+        }
+
+        else {
+            cout << "Las matrices no tienen las dimenciones adecuadas.";
+        }
+    };
+
+    void MultiEs(float k){
+        for (int i = 0;i < n.size(); i++){
+            n.at(i)=n.at(i)*k;
+        };
+    };
+    void transposposicion1(){
+        //vector <float> S;
+        //for (int i = 0;i < x.size(); i++)
+            //S.push_back(x.at(i));
+        //x.clear();
+        //for (int i = 0;i < y.size(); i++)
+            //x.push_back(y.at(i));
+        //y.clear();
+        //for (int i = 0;i < S.size(); i++)
+            //y.push_back(S.at(i));
+        x.swap(y);
+    };
+};
+
+
+int main() {
+    vector <int> x,y,x2,y2,x3,y3;
+    vector <float> n,n2,n3;
+    Array* array = new Array(x,y,n);
+    Array* array2= new Array( x2, y2, n2);
+    Array* array3= new Array( x3, y3, n3);
+
+    array->setX(3);
+    array->setY(1);
+    array->setN(3);
+
+    array->setX(1);
+    array->setY(3);
+    array->setN(5);
+
+    array->setX(1);
+    array->setY(2);
+    array->setN(6);
+
+    array->setX(1);
+    array->setY(1);
+    array->setN(9);
+
+
+    array2->setX(3);
+    array2->setY(2);
+    array2->setN(5);
+
+    array2->setX(2);
+    array2->setY(3);
+    array2->setN(8);
+
+    cout << "Matriz 1 =" << endl;
+    array->printXYN();
+    //cout << "Matriz 2 =" << endl;
+    //array2->printXYN();
+    //probando ingreso de datos.
+    // IGNORAR //cout<<array->getX() <<array->getY() << array->getN() << endl;
+    //probando transpocicion
+
+    array->transposposicion1();
+    cout << "Transpocicion matriz 1 =" << endl;
+    //for (int i = 0; i < (array->getX()).size(); i++){
+        //cout<< (array->getX()).at(i) << (array->getY()).at(i) << (array->getN()).at(i) << endl;};
+    array->printXYN();
+
+    cout << "Matriz 2 =" << endl;
+    array2 ->printXYN();
+
+    array3->Suma(array2->getX(), array2->getY(), array2->getN(), array->getX(), array->getY(), array->getN());
+    cout << "Suma M3 = M1 + M2=" << endl;
+    array3->printXYN();
+
+    //array3->MultiMa(array->getX(), array->getY(), array->getN(), array2->getX(), array2->getY(), array2->getN());
+
+    int k = 3;
+    array->MultiEs(k);
+    cout << "Escalar de matriz 1= " << k << endl;
+    array->printXYN();
+};
